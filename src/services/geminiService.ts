@@ -10,8 +10,7 @@ interface GeminiResponse {
 
 export async function analyzeResume(resumeText: string, jobRole: string): Promise<GeminiResponse> {
   try {
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;;
-    console.log(apiKey);
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     
@@ -120,3 +119,50 @@ export async function analyzeResume(resumeText: string, jobRole: string): Promis
     };
   }
 }
+
+
+export const extractTextUsingGemini = async (file: File): Promise<string> => {
+  const reader = new FileReader();
+
+  return new Promise((resolve, reject) => {
+    reader.onload = async () => {
+      try {
+        const base64 = reader.result?.toString().split(",")[1];
+
+        const prompt = "Extract all readable text from this file. If it's a resume, format the result for analysis.";
+        
+        const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  { text: prompt },
+                  {
+                    inlineData: {
+                      mimeType: file.type,
+                      data: base64,
+                    },
+                  },
+                ],
+              },
+            ],
+          }),
+        });
+
+        const result = await res.json();
+        const text = result.candidates?.[0]?.content?.parts?.[0]?.text || "";
+        resolve(text);
+      } catch (err) {
+        console.error("Gemini file extract error:", err);
+        reject("Failed to extract text from file");
+      }
+    };
+
+    reader.onerror = () => reject("Error reading file");
+    reader.readAsDataURL(file);
+  });
+};
+

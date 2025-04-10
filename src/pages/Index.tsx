@@ -6,6 +6,7 @@ import FeedbackSection from "@/components/FeedbackSection";
 import Footer from "@/components/Footer";
 import { analyzeResume } from "@/services/geminiService";
 import { toast } from "sonner";
+import { extractTextUsingGemini } from "@/services/geminiService";
 
 const Index = () => {
   const [resumeData, setResumeData] = useState<{
@@ -40,8 +41,11 @@ const Index = () => {
       if (!resumeText && data.file) {
         // For this implementation, we'll show a message that file content extraction
         // would be implemented in a full version
-        toast.info("File content extraction would be implemented in a full version. Using mock data for demo.");
-        resumeText = "Sample resume content from uploaded file";
+        // toast.info("File content extraction would be implemented in a full version. Using mock data for demo.");
+        // resumeText = "Sample resume content from uploaded file";
+
+        toast.info("Extracting text using Gemini...");
+        resumeText = await extractTextUsingGemini(data.file);
       }
       
       if (!resumeText) {
