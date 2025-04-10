@@ -31,6 +31,7 @@ const Index = () => {
   }) => {
     setResumeData(data);
     setIsProcessing(true);
+    setFeedback(null); // Clear previous feedback while processing
     
     try {
       // If a file was uploaded but no text was extracted yet, handle it here
@@ -49,12 +50,32 @@ const Index = () => {
         return;
       }
       
+      if (!data.jobRole.trim()) {
+        toast.error("Please specify a target job role");
+        setIsProcessing(false);
+        return;
+      }
+      
       // Use the Gemini API to analyze the resume
+      console.log("Submitting resume for analysis:", { 
+        textLength: resumeText.length,
+        jobRole: data.jobRole
+      });
+      
       const result = await analyzeResume(resumeText, data.jobRole);
+      console.log("Analysis result received:", result);
       setFeedback(result);
     } catch (error) {
       console.error("Error processing resume:", error);
-      toast.error("Failed to process resume. Please try again.");
+      toast.error("Failed to process resume. Please try again or use different text.");
+      
+      // Set a more user-friendly error feedback
+      setFeedback({
+        summary: "We couldn't process your resume at this time. Please try again later.",
+        improvements: ["The service is temporarily unavailable. Please try again in a few minutes."],
+        tailoring: ["While waiting, you can review and edit your resume text."],
+        score: 0
+      });
     } finally {
       setIsProcessing(false);
     }
