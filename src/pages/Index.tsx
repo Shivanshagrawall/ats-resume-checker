@@ -6,6 +6,8 @@ import FeedbackSection from "@/components/FeedbackSection";
 import TemplateSection from "@/components/TemplateSection";
 import Footer from "@/components/Footer";
 import { Separator } from "@/components/ui/separator";
+import { analyzeResume } from "@/services/geminiService";
+import { toast } from "sonner";
 
 const Index = () => {
   const [resumeData, setResumeData] = useState<{
@@ -23,7 +25,7 @@ const Index = () => {
     score: number;
   } | null>(null);
 
-  const handleResumeSubmit = (data: {
+  const handleResumeSubmit = async (data: {
     text: string;
     file: File | null;
     jobRole: string;
@@ -32,33 +34,32 @@ const Index = () => {
     setResumeData(data);
     setIsProcessing(true);
     
-    // Simulate API call to gemini-1.5-flash
-    setTimeout(() => {
-      const mockFeedback = generateMockFeedback(data.jobRole);
-      setFeedback(mockFeedback);
+    try {
+      // If a file was uploaded but no text was extracted yet, handle it here
+      let resumeText = data.text;
+      
+      if (!resumeText && data.file) {
+        // For this implementation, we'll show a message that file content extraction
+        // would be implemented in a full version
+        toast.info("File content extraction would be implemented in a full version. Using mock data for demo.");
+        resumeText = "Sample resume content from uploaded file";
+      }
+      
+      if (!resumeText) {
+        toast.error("Please provide resume text or upload a file");
+        setIsProcessing(false);
+        return;
+      }
+      
+      // Use the Gemini API to analyze the resume
+      const result = await analyzeResume(resumeText, data.jobRole);
+      setFeedback(result);
+    } catch (error) {
+      console.error("Error processing resume:", error);
+      toast.error("Failed to process resume. Please try again.");
+    } finally {
       setIsProcessing(false);
-    }, 2500);
-  };
-
-  const generateMockFeedback = (jobRole: string) => {
-    return {
-      summary: `Your resume shows strong experience but could benefit from more quantifiable achievements. For the ${jobRole} position, emphasize your technical skills and project outcomes more prominently. Consider restructuring your work experience to highlight relevant accomplishments first.`,
-      improvements: [
-        "Add more quantifiable metrics to demonstrate impact (e.g., 'Increased user engagement by 35%' instead of 'Improved user engagement')",
-        "Reduce use of passive voice in your bullet points for more impactful statements",
-        "Consolidate your skills section to focus on the most relevant technologies for this role",
-        "Your summary is too generic - make it more specific to your unique value proposition",
-        "Consider adding a dedicated section highlighting your most relevant projects"
-      ],
-      tailoring: [
-        `Emphasize experience with technologies mentioned in the ${jobRole} job descriptions`,
-        "Add keywords from the job posting throughout your resume to pass ATS screening",
-        "Reorder your work history to prioritize roles most similar to this position",
-        "Highlight collaborative projects and team leadership if mentioned in the job posting",
-        `Customize your professional summary to specifically address how you're a perfect fit for ${jobRole}`
-      ],
-      score: 7
-    };
+    }
   };
 
   return (
