@@ -10,7 +10,9 @@ interface GeminiResponse {
 
 export async function analyzeResume(resumeText: string, jobRole: string): Promise<GeminiResponse> {
   try {
-    const apiKey = "AIzaSyD3og9AWkGs2EypeTAzpDQztna2p4yYNiw";
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;;
+    console.log(apiKey);
+    
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
     
     const prompt = `
