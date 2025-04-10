@@ -11,7 +11,9 @@ const Footer = () => {
           <span className="text-sm font-medium">AI Resume & Portfolio Assistant</span>
         </div>
         <p className="text-xs text-muted-foreground">
-          Enhance your career prospects with AI-powered resume optimization
+        Optimize Your Resume for ATS Today
+        <br />
+        Use our free AI resume checker to ensure your resume is ATS-friendly and gets past screening systems. Get noticed. Get hired.
         </p>
         <p className="text-xs text-muted-foreground mt-4">
           © {new Date().getFullYear()} AI Resume Assistant. All rights reserved.

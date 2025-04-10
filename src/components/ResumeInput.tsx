@@ -71,9 +71,9 @@ const ResumeInput = ({ onSubmit }: ResumeInputProps) => {
   return (
     <Card className="resume-card">
       <CardHeader>
-        <CardTitle className="text-2xl">Submit Your Resume</CardTitle>
+        <CardTitle className="text-2xl">Scan Your Resume with ATS Resume Checker</CardTitle>
         <CardDescription>
-          Upload your resume or paste the text to get AI-powered feedback
+        Upload your resume or paste the text below. Our AI will instantly analyze your resume for ATS compatibility and give suggestions for improvement.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -92,7 +92,7 @@ const ResumeInput = ({ onSubmit }: ResumeInputProps) => {
 
             <TabsContent value="text" className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="resumeText">Resume Text</Label>
+                <Label htmlFor="resumeText">Paste Your Resume Text for ATS Analysis</Label>
                 <Textarea
                   id="resumeText"
                   placeholder="Paste your resume text here..."
@@ -117,7 +117,7 @@ const ResumeInput = ({ onSubmit }: ResumeInputProps) => {
             </TabsContent>
 
             <div className="space-y-2 mt-6">
-              <Label htmlFor="jobRole">Target Job Role</Label>
+              <Label htmlFor="jobRole">Target Job Role (e.g., Frontend Developer at Google)</Label>
               <Input
                 id="jobRole"
                 placeholder="e.g., Frontend Developer at Google"
@@ -130,7 +130,7 @@ const ResumeInput = ({ onSubmit }: ResumeInputProps) => {
             </div>
 
             <Button type="submit" className="w-full mt-6">
-              Get AI Feedback
+            Check Resume for ATS Compatibility
             </Button>
           </Tabs>
         </form>
