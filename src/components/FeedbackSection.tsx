@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AlertCircle, CheckCircle2, Edit, MessageSquare } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
 interface FeedbackSectionProps {
@@ -72,11 +71,6 @@ const FeedbackSection = ({ isLoading, feedback, jobRole }: FeedbackSectionProps)
               <h3 className="font-medium mb-2">Overall Feedback</h3>
               <p className="text-muted-foreground">{feedback.summary}</p>
             </div>
-            <div className="flex justify-end">
-              <Button variant="outline" size="sm" className="text-xs">
-                Copy Improved Summary
-              </Button>
-            </div>
           </TabsContent>
 
           <TabsContent value="improvements" className="space-y-4">
@@ -90,11 +84,6 @@ const FeedbackSection = ({ isLoading, feedback, jobRole }: FeedbackSectionProps)
                   </li>
                 ))}
               </ul>
-            </div>
-            <div className="flex justify-end">
-              <Button variant="outline" size="sm" className="text-xs">
-                Download All Suggestions
-              </Button>
             </div>
           </TabsContent>
 
@@ -113,22 +102,8 @@ const FeedbackSection = ({ isLoading, feedback, jobRole }: FeedbackSectionProps)
                 ))}
               </ul>
             </div>
-            <div className="flex justify-end">
-              <Button variant="outline" size="sm" className="text-xs">
-                Apply All Tailoring Suggestions
-              </Button>
-            </div>
           </TabsContent>
         </Tabs>
-
-        <Separator className="my-6" />
-
-        <div className="flex justify-center">
-          <Button className="gap-2">
-            <Edit className="h-4 w-4" />
-            Generate Improved Resume
-          </Button>
-        </div>
       </CardContent>
     </Card>
   );
