@@ -3,9 +3,7 @@ import React, { useState } from "react";
 import Header from "@/components/Header";
 import ResumeInput from "@/components/ResumeInput";
 import FeedbackSection from "@/components/FeedbackSection";
-import TemplateSection from "@/components/TemplateSection";
 import Footer from "@/components/Footer";
-import { Separator } from "@/components/ui/separator";
 import { analyzeResume } from "@/services/geminiService";
 import { toast } from "sonner";
 
@@ -76,12 +74,6 @@ const Index = () => {
             jobRole={resumeData?.jobRole || ""}
           />
         </div>
-        
-        <Separator className="my-12" />
-        
-        <section className="mb-12">
-          <TemplateSection />
-        </section>
       </main>
       
       <Footer />
